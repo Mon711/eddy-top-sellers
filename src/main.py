@@ -1,16 +1,20 @@
+import json
+
 from shopify.client import run_shopify_query
-from shopify.queries import SHOP_INFO_QUERY
+from shopify.queries import ORDERS_INSPECTION_QUERY
 
 def main():
     
-    data = run_shopify_query(SHOP_INFO_QUERY)
+    order_query = "created_at:>=2025-11-01 created_at:<=2026-05-31"
     
-    shop = data["shop"]
+    variables = {
+      "orderQuery": order_query,
+      "first": 5
+    }
     
-    print("Connected to Shopify")
-    print(f"Store: {shop['name']}")
-    print(f"Domain: {shop['myshopifyDomain']}")
-    print(f"Currency: {shop['currencyCode']}")
+    data = run_shopify_query(ORDERS_INSPECTION_QUERY, variables)
+    
+    print(json.dumps(data, indent=2))
     
     
 if __name__ == "__main__":
