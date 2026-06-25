@@ -1,17 +1,9 @@
-from shopify_client import run_shopify_query
+from shopify.client import run_shopify_query
+from shopify.queries import SHOP_INFO_QUERY
 
 def main():
-    query = """
-    query {
-      shop {
-        name
-        myshopifyDomain
-        currencyCode
-      }
-    }
-    """
     
-    data = run_shopify_query(query)
+    data = run_shopify_query(SHOP_INFO_QUERY)
     
     shop = data["shop"]
     
