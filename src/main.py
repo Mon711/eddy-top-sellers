@@ -9,7 +9,7 @@ def main():
     
     variables = {
       "orderQuery": order_query,
-      "first": 5
+      "first": 20
     }
     
     data = run_shopify_query(ORDERS_INSPECTION_QUERY, variables)

@@ -1,0 +1,13 @@
+{
+  "financialStatuses": [
+    "REFUNDED",
+    "VOIDED"
+  ],
+  "orderTagKeywords": [
+    "gift card",
+    "refund",
+    "zero refund",
+    "exchange"
+  ],
+  "excludeZeroDollarOrders": true
+}
