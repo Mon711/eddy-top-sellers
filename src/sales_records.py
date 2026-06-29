@@ -269,6 +269,7 @@ def build_sales_records(
                     {
                         "order_name": order.get("name"),
                         "product_title": line_item.get("title"),
+                        "product_tags": product.get("tags", []),
                         "skip_reason": "season_not_in_report",
                     }
                 )
