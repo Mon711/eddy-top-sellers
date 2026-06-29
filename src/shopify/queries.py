@@ -9,13 +9,19 @@ query {
 """
 
 ORDERS_INSPECTION_QUERY = """
-query OrdersInspection($orderQuery: String!, $first: Int!) {
+query OrdersInspection($orderQuery: String!, $first: Int!, $after: String) {
   orders(
     first: $first
+    after: $after
     query: $orderQuery
     sortKey: CREATED_AT
     reverse: false
   ) {
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+
     edges {
       cursor
       node {
