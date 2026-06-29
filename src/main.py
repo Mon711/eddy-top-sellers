@@ -24,11 +24,12 @@ def main():
     
     variables = {
       "orderQuery": order_query,
-      "first": 20
+      "first": 100
     }
     
     data = run_shopify_query(ORDERS_INSPECTION_QUERY, variables)
-    
+    print(json.dumps(data, indent=2))
+
     seasons_config = load_json_config("config/seasons.json")
     accessory_config = load_json_config("config/accessory-exclusions.json")
     order_exclusions_config = load_json_config("config/order-exclusions.json")

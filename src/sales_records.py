@@ -1,5 +1,20 @@
 from datetime import datetime
 
+VALID_SIZES = {
+    "xx-small",
+    "x-small",
+    "small",
+    "medium",
+    "large",
+    "x-large",
+    "xx-large",
+    "xs",
+    "s",
+    "m",
+    "l",
+    "xl",
+    "xxl",
+}
 
 def parse_variant_title(variant_title):
     """
@@ -14,17 +29,30 @@ def parse_variant_title(variant_title):
     if not variant_title:
         return {"size": None, "color": None}
 
-    parts = variant_title.split(" / ")
+    parts = [part.strip() for part in variant_title.split(" / ")]
 
     if len(parts) == 1:
-        return {"size": None, "color": parts[0].strip()}
+        return {"size": None, "color": parts[0]}
 
-    size = parts[0].strip()
-    color = " / ".join(parts[1:]).strip()
+    first = parts[0]
+    second = " / ".join(parts[1:])
+    
+    if first.lower() in VALID_SIZES:
+        return {
+            "size": first,
+            "color": second,
+        }
+    
+    if second.lower() in VALID_SIZES:
+        return {
+            "size": second,
+            "color": first,
+        }
 
+    # Fallback if neither side looks like a size.
     return {
-        "size": size,
-        "color": color,
+        "size": first,
+        "color": second,
     }
 
 
@@ -190,7 +218,6 @@ def is_accessory_product(product, accessory_config):
     return False
 
 
-# !NOTE: The urls are showing 404 not found, so have to change this fn.
 def build_product_url(product_handle):
     """
     Builds the public ShopEddy product URL from the Shopify product handle.
