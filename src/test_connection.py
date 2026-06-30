@@ -1,7 +1,8 @@
 from shopify.client import run_shopify_query
 from shopify.queries import SHOP_INFO_QUERY
 
-def test():    
+
+def test():
     data = run_shopify_query(SHOP_INFO_QUERY)
 
     shop = data["shop"]

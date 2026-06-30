@@ -35,23 +35,22 @@ def build_overall_rows(cleaned_records):
                 "product_url": record.get("product_url"),
                 "image_url": record.get("image_url"),
             }
-            
+
         grouped_records[group_key]["net_items"] += record.get("quantity", 0)
         grouped_records[group_key]["net_sales"] += record.get("net_sales", 0)
-    
-    
+
     sorted_groups = sorted(
         grouped_records.values(),
         key=lambda row: (
-          -row["net_sales"],
-          -row["net_items"],
-          row["product_title"] or "",
-          row["color"] or ""
-        )
+            -row["net_sales"],
+            -row["net_items"],
+            row["product_title"] or "",
+            row["color"] or "",
+        ),
     )
-    
+
     overall_rows = []
-    
+
     for index, row in enumerate(sorted_groups, start=1):
         overall_rows.append(
             {
@@ -66,5 +65,5 @@ def build_overall_rows(cleaned_records):
                 "Product Page & Images": row["product_url"],
             }
         )
-    
+
     return overall_rows

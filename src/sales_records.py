@@ -16,6 +16,7 @@ VALID_SIZES = {
     "xxl",
 }
 
+
 def parse_variant_title(variant_title):
     """
     Splits Shopify variant titles like:
@@ -36,13 +37,13 @@ def parse_variant_title(variant_title):
 
     first = parts[0]
     second = " / ".join(parts[1:])
-    
+
     if first.lower() in VALID_SIZES:
         return {
             "size": first,
             "color": second,
         }
-    
+
     if second.lower() in VALID_SIZES:
         return {
             "size": second,
