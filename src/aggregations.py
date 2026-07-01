@@ -67,3 +67,75 @@ def build_overall_rows(cleaned_records):
         )
 
     return overall_rows
+
+
+def build_month_wise_rows(cleaned_records):
+    """
+    Builds rows for the Month wise top sellers sheet.
+
+    Groups sales by:
+
+    month_key
+    season_code
+    product_title
+
+    This means different colors and sizes are combined into one product row
+    for each month.
+    """
+
+    grouped_records = {}
+
+    for record in cleaned_records:
+        group_key = (
+            record.get("month_key"),
+            record.get("season_code"),
+            record.get("product_title"),
+        )
+
+        if group_key not in grouped_records:
+            grouped_records[group_key] = {
+                "month_key": record.get("month_key"),
+                "month_label": record.get("month_label"),
+                "season_code": record.get("season_code"),
+                "season_name": record.get("season_name"),
+                "product_title": record.get("product_title"),
+                "colors_sold": set(),
+                "net_items": 0,
+                "net_sales": 0.0,
+                "product_url": record.get("product_url"),
+            }
+
+        color = record.get("color")
+
+        if color:
+            grouped_records[group_key]["colors_sold"].add(color)
+
+        grouped_records[group_key]["net_items"] += record.get("quantity", 0)
+        grouped_records[group_key]["net_sales"] += record.get("net_sales", 0.0)
+
+    sorted_groups = sorted(
+        grouped_records.values(),
+        key=lambda row: (
+            row["month_key"],
+            -row["net_sales"],
+            -row["net_items"],
+            row["product_title"] or "",
+        ),
+    )
+
+    month_wise_rows = []
+
+    for row in sorted_groups:
+        month_wise_rows.append(
+            {
+                "Date": row["month_label"],
+                "Product Title": row["product_title"],
+                "Season": row["season_name"],
+                "Colors Sold": ", ".join(sorted(row["colors_sold"])),
+                "Net Items": row["net_items"],
+                "Net Sales": round(row["net_sales"], 2),
+                "Direct ShopEddy Product Link": row["product_url"],
+            }
+        )
+
+    return month_wise_rows

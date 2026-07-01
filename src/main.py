@@ -3,7 +3,7 @@ import json
 from shopify.client import run_shopify_query
 from shopify.queries import ORDERS_INSPECTION_QUERY
 from sales_records import build_sales_records
-from aggregations import build_overall_rows
+from aggregations import build_overall_rows, build_month_wise_rows
 
 
 def load_json_config(file_path):
@@ -73,20 +73,26 @@ def main():
     )
 
     overall_rows = build_overall_rows(result["cleaned_records"])
+    
+    month_wise_rows = build_month_wise_rows(result["cleaned_records"])
 
     with open("data/output.json", "w") as file:
         json.dump(data, file, indent=2)
 
-    with open("data/cleaned_output", "w") as file:
+    with open("data/cleaned_output.json", "w") as file:
         json.dump(result, file, indent=2)
 
-    with open("data/aggregated_output.json", "w") as file:
+    with open("data/overall_output.json", "w") as file:
         json.dump(overall_rows, file, indent=2)
+        
+    with open("data/month_wise_output.json", "w") as file:
+      json.dump(month_wise_rows, file, indent=2)
 
     print("Done.")
     print(f"Cleaned records: {len(result['cleaned_records'])}")
     print(f"Skipped records: {len(result['skipped_records'])}")
     print(f"Overall rows: {len(overall_rows)}")
+    print(f"Month wise rows: {len(month_wise_rows)}")
 
 
 if __name__ == "__main__":
